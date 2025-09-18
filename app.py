@@ -25,4 +25,4 @@ elif st.session_state.page == "Moralis":
     show_moralis()
 st.dataframe(df[["owner", "balance", "percentage"]])
 st.bar_chart(df.set_index("owner")["balance"])
-st.pyplot(df.set_index("owner")["percentage"].plot.pie(
+st.pyplot(df.set_index("owner")["percentage"].plot.pie)
