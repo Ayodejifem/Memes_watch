@@ -1,6 +1,7 @@
 import streamlit as st
 from birdeye_page import show_birdeye
 from moralis_page import show_moralis
+from wallet_page import show_wallet_page
 
 # ----- PAGE CONFIG -----
 st.set_page_config(
@@ -146,14 +147,14 @@ st.sidebar.markdown("""
     <p><b>Track:</b></p>
     - 🚀 New Listings <br>
     - 🐳 Whale Holders <br>
-    - 📉 Market Insights
+    - 📉 Wallet Insights
 """, unsafe_allow_html=True)
 
 # ----- HERO BANNER -----
 st.markdown("""
     <div class="hero">
         <h1>🚀 MemesWatch Dashboard</h1>
-        <p>Live Meme Token Analytics • Whale Tracking • Market Insights</p>
+        <p>Live Meme Token Analytics • Whale Tracking • Wallet Insights</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -178,7 +179,7 @@ st.markdown(
 st.markdown('<div class="center-radio">', unsafe_allow_html=True)
 page = st.radio(
     "Navigation",
-    ["🐦 New Listings", "🐳 Token Top Holders"],
+    ["🐦 New Listings", "🐳 Token Top Holders", "🔑 Wallet Insights"],
     horizontal=True,
     label_visibility="collapsed"
 )
@@ -189,3 +190,61 @@ if page == "🐦 New Listings":
     show_birdeye()
 elif page == "🐳 Token Top Holders":
     show_moralis()
+elif page == "🔑 Wallet Insights":
+    show_wallet_page()
+
+# ----- FOOTER (Main Page) -----
+st.markdown(
+    """
+    <style>
+    .footer {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background: linear-gradient(135deg, #8A4AF3 0%, #00FFF0 100%);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        margin-top: 50px;
+        border-radius: 8px 8px 0 0;
+    }
+
+    /* Sidebar footer */
+    [data-testid="stSidebar"] {
+        position: relative;
+    }
+    .sidebar-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 16rem; /* default sidebar width */
+        background: linear-gradient(135deg, #8A4AF3 0%, #00FFF0 100%);
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+        border-radius: 8px 8px 0 0;
+    }
+    </style>
+    <div class="footer">
+        🚀 data sourced from birdeye and Moralis API | Built using Streamlit | © 2025 MemesWatch
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# ----- FOOTER (Sidebar) -----
+st.sidebar.markdown(
+    """
+    <div class="sidebar-footer">
+        data sourced from birdeye and Moralis API <br>
+        Built using streamlit | © 2025 MemesWatch
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+

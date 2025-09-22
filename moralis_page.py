@@ -43,12 +43,12 @@ def fetch_top_holders(contract_address: str, limit: int = 20):
 
 
 def show_moralis():
-    st.title("👥 Moralis Top Holders (Solana)")
+    st.title("👥 Token Top Holders Analysis (Solana)")
 
     # User input for contract address
     contract_address = st.text_input(
         "Enter Token Contract Address",
-        value="4zLj7pCr1kQSRPNReQAqbpwvtEdKrkwj2peHYTyB92sS"
+        value="WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk"
     )
     limit = st.slider("Number of top holders to fetch", 5, 100, 20)
 
