@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 import os
 import requests
@@ -10,6 +10,15 @@ load_dotenv()
 
 BIRDEYE_API_KEY = os.getenv("Birdeye_Api_key")
 MORALIS_API_KEY = os.getenv("MORALIS_API_KEY")
+
+# Enable CORS for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # change to your Vercel domain in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- Real async data fetchers ---
 async def get_birdeye_data():
@@ -24,7 +33,6 @@ async def get_birdeye_data():
     resp = await loop.run_in_executor(None, lambda: requests.get(url, headers=headers, params=params))
     data = resp.json()
     tokens = data.get("data", {}).get("items", [])
-    # Example: adapt to your table columns
     return [
         {
             "token": t.get("symbol"),
@@ -36,8 +44,7 @@ async def get_birdeye_data():
     ]
 
 async def get_top_holders():
-    # Example: Use a known token address for demonstration
-    token_address = "WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk"  # SOL token
+    token_address = "So11111111111111111111111111111111111111112"  # SOL token
     url = f"https://solana-gateway.moralis.io/token/mainnet/{token_address}/top-holders"
     headers = {
         "Accept": "application/json",
@@ -58,8 +65,7 @@ async def get_top_holders():
     ]
 
 async def get_wallet_insights():
-    # Example: Use a known wallet address for demonstration
-    wallet_address = "5PAhQiYdLBd6SVdjzBQDxUAEFyDdF5ExNPQfcscnPRj5"
+    wallet_address = "kXB7FfzdrfZpAZEW3TZcp8a8CwQbsowa6BdfAHZ4gVs"
     url = f"https://solana-gateway.moralis.io/account/mainnet/{wallet_address}/tokens"
     headers = {
         "Accept": "application/json",
@@ -78,63 +84,19 @@ async def get_wallet_insights():
         for t in tokens
     ]
 
-# --- Pages ---
-@app.get("/", response_class=HTMLResponse)
+# --- Endpoints ---
+@app.get("/")
 async def home():
-    return """
-    <h1 style="text-align:center">🚀 MemesWatch Dashboard</h1>
-    <p style="text-align:center">Welcome! Choose a section:</p>
-    <ul style="text-align:center; list-style:none;">
-        <li><a href="/new-listings">🐦 New Listings</a></li>
-        <li><a href="/top-holders">🐳 Token Top Holders</a></li>
-        <li><a href="/wallet-insights">🔑 Wallet Insights</a></li>
-    </ul>
-    """
+    return {"message": "🚀 MemesWatch API is running", "endpoints": ["/new-listings", "/top-holders", "/wallet-insights"]}
 
-@app.get("/new-listings", response_class=HTMLResponse)
+@app.get("/new-listings")
 async def new_listings():
-    data = await get_birdeye_data()
-    rows = "".join(
-        f"<tr><td>{d['token']}</td><td>{d['exchange']}</td><td>{d['price']}</td><td>{d['volume']}</td></tr>"
-        for d in data
-    )
-    return f"""
-    <h2 style="text-align:center">🐦 New Listings</h2>
-    <table border="1" style="margin:auto;">
-        <tr><th>Token</th><th>Exchange</th><th>Price</th><th>Volume</th></tr>
-        {rows}
-    </table>
-    <p style="text-align:center"><a href="/">⬅ Back Home</a></p>
-    """
+    return await get_birdeye_data()
 
-@app.get("/top-holders", response_class=HTMLResponse)
+@app.get("/top-holders")
 async def top_holders():
-    data = await get_top_holders()
-    rows = "".join(
-        f"<tr><td>{d['holder']}</td><td>{d['token']}</td><td>{d['balance']}</td></tr>"
-        for d in data
-    )
-    return f"""
-    <h2 style="text-align:center">🐳 Token Top Holders</h2>
-    <table border="1" style="margin:auto;">
-        <tr><th>Holder</th><th>Token</th><th>Balance</th></tr>
-        {rows}
-    </table>
-    <p style="text-align:center"><a href="/">⬅ Back Home</a></p>
-    """
+    return await get_top_holders()
 
-@app.get("/wallet-insights", response_class=HTMLResponse)
+@app.get("/wallet-insights")
 async def wallet_insights():
-    data = await get_wallet_insights()
-    rows = "".join(
-        f"<tr><td>{d['wallet']}</td><td>{d['tx_count']}</td><td>{d['last_active']}</td></tr>"
-        for d in data
-    )
-    return f"""
-    <h2 style="text-align:center">🔑 Wallet Insights</h2>
-    <table border="1" style="margin:auto;">
-        <tr><th>Wallet</th><th>Tx Count</th><th>Last Active</th></tr>
-        {rows}
-    </table>
-    <p style="text-align:center"><a href="/">⬅ Back Home</a></p>
-    """
+    return await get_wallet_insights()

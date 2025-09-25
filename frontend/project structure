@@ -1,0 +1,10 @@
+/memeswatch-frontend
+  /src
+    App.js
+    index.js
+    components/
+      NewListings.js
+      TopHolders.js
+      WalletInsights.js
+  package.json
+  ...
