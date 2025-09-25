@@ -5,7 +5,7 @@ function NewListings() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/new-listings")
+    fetch("https://memes-watch.onrender.com/new-listings")
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));

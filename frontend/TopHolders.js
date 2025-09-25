@@ -5,7 +5,7 @@ function TopHolders() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/top-holders")
+    fetch("https://memes-watch.onrender.com/top-holders")
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));

@@ -5,7 +5,7 @@ function WalletInsights() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/wallet-insights")
+    fetch("https://memes-watch.onrender.com/wallet-insights")
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));
