@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-function TopHolders() {
+function WalletInsights() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://memes-watch.onrender.com/top-holders")
+    fetch(`${process.env.REACT_APP_API_URL}/wallet-insights`)
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));
@@ -13,24 +13,24 @@ function TopHolders() {
 
   return (
     <div>
-      <h2>🐳 Token Top Holders</h2>
+      <h2>🔑 Wallet Insights</h2>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <table border="1" style={{ margin: "auto", width: "100%" }}>
           <thead>
             <tr>
-              <th>Holder</th>
-              <th>Token</th>
-              <th>Balance</th>
+              <th>Wallet</th>
+              <th>Tx Count</th>
+              <th>Last Active</th>
             </tr>
           </thead>
           <tbody>
             {data.map((d, i) => (
               <tr key={i}>
-                <td>{d.holder}</td>
-                <td>{d.token}</td>
-                <td>{d.balance}</td>
+                <td>{d.wallet}</td>
+                <td>{d.tx_count}</td>
+                <td>{d.last_active}</td>
               </tr>
             ))}
           </tbody>
@@ -40,4 +40,4 @@ function TopHolders() {
   );
 }
 
-export default TopHolders;
+export default WalletInsights;

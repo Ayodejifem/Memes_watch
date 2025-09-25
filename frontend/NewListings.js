@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-function WalletInsights() {
+function NewListings() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("https://memes-watch.onrender.com/wallet-insights")
+    fetch(`${process.env.REACT_APP_API_URL}/new-listings`)
       .then((res) => res.json())
       .then(setData)
       .finally(() => setLoading(false));
@@ -13,24 +13,26 @@ function WalletInsights() {
 
   return (
     <div>
-      <h2>🔑 Wallet Insights</h2>
+      <h2>🐦 New Listings</h2>
       {loading ? (
         <p>Loading...</p>
       ) : (
         <table border="1" style={{ margin: "auto", width: "100%" }}>
           <thead>
             <tr>
-              <th>Wallet</th>
-              <th>Tx Count</th>
-              <th>Last Active</th>
+              <th>Token</th>
+              <th>Exchange</th>
+              <th>Price</th>
+              <th>Volume</th>
             </tr>
           </thead>
           <tbody>
             {data.map((d, i) => (
               <tr key={i}>
-                <td>{d.wallet}</td>
-                <td>{d.tx_count}</td>
-                <td>{d.last_active}</td>
+                <td>{d.token}</td>
+                <td>{d.exchange}</td>
+                <td>{d.price}</td>
+                <td>{d.volume}</td>
               </tr>
             ))}
           </tbody>
@@ -40,4 +42,4 @@ function WalletInsights() {
   );
 }
 
-export default WalletInsights;
+export default NewListings;
