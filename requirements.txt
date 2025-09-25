@@ -5,3 +5,7 @@ streamlit
 plotly
 matplotlib
 joblib
+fastapi
+uvicorn[standard]
+python-dotenv
+altair
