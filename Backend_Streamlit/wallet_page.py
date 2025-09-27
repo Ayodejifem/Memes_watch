@@ -44,7 +44,7 @@ def fetch_wallet_tokens(wallet_address: str):
         df = df[[col for col in cols_to_keep if col in df.columns]]
 
         # Cache with joblib
-        joblib.dump(df, "wallet_tokens.pkl")
+        joblib.dump(df, "Database/wallet_tokens.pkl")
 
         return df
     else:
