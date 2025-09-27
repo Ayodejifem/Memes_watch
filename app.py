@@ -1,7 +1,7 @@
 import streamlit as st
-from birdeye_page import show_birdeye
-from moralis_page import show_moralis
-from wallet_page import show_wallet_page
+from Backend_Streamlit.birdeye_page import show_birdeye
+from Backend_Streamlit.moralis_page import show_moralis
+from Backend_Streamlit.wallet_page import show_wallet_page
 
 # ----- PAGE CONFIG -----
 st.set_page_config(

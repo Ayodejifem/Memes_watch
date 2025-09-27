@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 @st.cache_data
 def load_data():
     try:
-        df = load("birdeye_new_listings.pkl")
+        df = load("Database/birdeye_new_listings.pkl")
         return df
     except Exception as e:
         st.error(f"Error loading data: {e}")
@@ -39,7 +39,7 @@ def fetch_and_save_birdeye():
             break
         all_tokens.extend(tokens)
     df = pd.DataFrame(all_tokens)
-    dump(df, "birdeye_new_listings.pkl")
+    dump(df, "Database/birdeye_new_listings.pkl")
     return df
 
 def show_birdeye():
