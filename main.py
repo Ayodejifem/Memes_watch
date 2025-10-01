@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import os
 from dotenv import load_dotenv
+import requests
+import asyncio
 import httpx
 
 app = FastAPI()
@@ -9,6 +11,15 @@ load_dotenv()
 
 BIRDEYE_API_KEY = os.getenv("Birdeye_Api_key")
 MORALIS_API_KEY = os.getenv("MORALIS_API_KEY")
+
+# Enable CORS for frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # change to your Vercel domain in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # --- Real async data fetchers ---
 async def get_birdeye_data():
@@ -39,13 +50,6 @@ async def get_birdeye_data():
         for item in all_items
     ]
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://solanamemeswatch.vercel.app/"],   # for testing
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["*"],
-)
 
 
 async def get_top_holders(limit: int = 100):
@@ -59,7 +63,7 @@ async def get_top_holders(limit: int = 100):
     cursor = None
     async with httpx.AsyncClient() as client:
         while len(all_holders) < limit:
-            params = {"limit": 30}
+            params = {"limit": 20}
             if cursor:
                 params["cursor"] = cursor
             resp = await client.get(url, headers=headers, params=params, timeout=10)
