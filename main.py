@@ -39,6 +39,15 @@ async def get_birdeye_data():
         for item in all_items
     ]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://solanamemeswatch.vercel.app/"],   # for testing
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["*"],
+)
+
+
 async def get_top_holders(limit: int = 100):
     token_address = "WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk"
     url = f"https://solana-gateway.moralis.io/token/mainnet/{token_address}/top-holders"
