@@ -54,12 +54,7 @@ async def get_birdeye_data():
 
 
 
-async def get_top_holders(limit: int = 100):
-    token_address: str = "WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk", 
-    """
-    Fetch top holders of a token. 
-    Default token_address is a placeholder but can be overridden by input.
-    """
+async def get_top_holders(token_address: str, limit: int = 100):
     url = f"https://solana-gateway.moralis.io/token/mainnet/{token_address}/top-holders"
     headers = {
         "accept": "application/json",
@@ -87,6 +82,7 @@ async def get_top_holders(limit: int = 100):
         }
         for h in all_holders[:limit]
     ]
+
 
 async def get_wallet_insights(wallet_address: str):
     url = f"https://solana-gateway.moralis.io/account/mainnet/{wallet_address}/tokens"
@@ -125,11 +121,11 @@ async def new_listings():
     return data
 
 @app.get("/top-holders")
-async def top_holders(token_address: str = Query(..., description="Solana token address"), limit: int = 100):
+async def top_holders(token_address: str = Query("WENWENvqqNya429ubCdR81ZmD69brwQaaBYY6p3LCpk", description="Solana token address"), limit: int = 100):
     data = await get_top_holders(token_address, limit=limit)
     return data
 
 @app.get("/wallet-insights")
-async def wallet_insights(wallet_address: str = Query(..., description="Solana wallet address")):
+async def wallet_insights(wallet_address: str = Query("DBmae92YTQKLsNzXcPscxiwPqMcz9stQr2prB5ZCAHPd", description="Solana wallet address")):
     data = await get_wallet_insights(wallet_address)
     return data
